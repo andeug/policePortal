@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <style >
+            .truncate {
+                max-width: 160px;
+                max-height: 15px;
+            }
+
+            .truncate > div {
+                display: block;
+                position: absolute;
+            }
+
+        </style>
+        <script>
+            new WOW().init();
+        </script>
+    </h:head>
+    <h:body >
+
+        <ui:composition>
+            <div align="center">
+                <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal:: Dashboard"  />
+                <br/><br/>
+                <p:panel header="Incidence Dashboard" closable="true" toggleSpeed="500" toggleable="true" widgetVar="panel">
+                    <h:form id="form">
+                        <h:panelGrid  frame="none" title="Top Six Crime Type By Frequency" id="crimerate" columns="6" width="100%" cellspacing="20" cellpadding="5">
+                            <p:panel header="Emergency" >
+                                <h:outputText value="Respondend To: " style="font-size:10px;"/>
+                                <h:outputLabel value="#{dashBoard.respondedEmergence}"/>
+                                <p:separator/>
+                                 <h:outputText value="Unrespondend To: " style="font-size:10px;"/>
+                                 <h:outputLabel value="#{dashBoard.unrespondedEmergence}"/>
+                                <p:separator/>
+                                <p:spacer width="5"/>
+                            </p:panel>
+                            <p:dataGrid columns="6" value="#{dashBoard.crimeRate}" var="si">
+                                <p:panel header="#{si.crime_type}" style="background-color:  #{si.crime_color}" >
+                                    <h:outputText value="Crime Frequency: " style="font-size:10px;"/>
+                                    <h:outputLabel value="#{si.crime_total}"/>
+                                    <p:separator/>
+                                    <p:spacer width="5"/>
+                                </p:panel>
+
+                            </p:dataGrid>
+                        </h:panelGrid>
+                        <h:panelGrid width="100%">
+                            <p:poll interval="3" update=":form:table,:form:crimerate" listener="#{dashBoard.updateOutputValues()}"/>
+                            <p:poll interval="180" update=":form:gender,:form:police,:form:case" listener="#{dashBoard.updateOutputValues()}"/>
+
+                            <p:dataTable  style="font-size: 14px;font-family:serif;font-weight:normal" id="table" 
+                                          var="user" 
+                                          value="#{dashBoard.evidence}" widgetVar="data">
+                                <f:facet name="header" >
+                                    <p:outputLabel style="font-size: 14px;font-family:serif;font-weight:normal;width: 100%" value="Latest Incidences Raised"/>
+                                </f:facet>
+                                <p:column headerText="Raised By" style="font-size: 14px;font-family:serif;font-weight:normal;width: 12px" >
+
+                                    <h:outputText value="#{user.reportedBy}"/>
+                                </p:column>
+                                <p:column headerText="Time Received" style="font-size: 14px;font-family:serif;font-weight:normal;width: 3px">
+                                    <h:outputText value="#{user.dateReceived}"/>
+                                </p:column>
+                                <p:column headerText="Crime Type" style="font-size: 14px;font-family:serif;font-weight:normal;width: 1px">
+                                    <h:outputText  value="#{user.crime_type}"/>
+                                </p:column>
+                                <p:column headerText="Crime Description" style="font-size: 14px;font-family:serif;font-weight:normal;width: 80px" >
+                                    <h:outputText  value="#{user.crime_description}"/>
+                                </p:column>
+                                <p:column headerText="Suspect name" style="font-size: 14px;font-family:serif;font-weight:normal;width: 30px" >
+                                    <h:outputText  value="#{user.suspect_name}"/>
+                                </p:column>
+                                <p:column headerText="Suspect  Description"  style="font-size: 14px;font-family:serif;font-weight:normal;width: 80px"  >
+                                    <h:outputText escape="false" value="#{user.suspect_description}"/>
+                                </p:column>
+                            </p:dataTable>
+
+                        </h:panelGrid>
+
+                        <h:panelGrid width="100%" columns="2" columnClasses="left.right" id="gender">
+                            <p:chart type="bar" model="#{dashBoard.genderBasedBar}" style="width:90%;height: 450px;font-size: 14px;font-family:serif;font-weight:normal; " />
+                            <p:chart type="bar" model="#{dashBoard.caseBasedBar}" style="width:90%;height: 450px;font-size: 14px;font-family:serif;font-weight:normal; "/> 
+                        </h:panelGrid>
+                        <h:panelGrid width="100%" columns="2" columnClasses="left.right" id="police">
+                            <p:chart type="bar" model="#{dashBoard.policeBasedBar}" style="width:90%;height: 450px;font-size: 14px;font-family:serif;font-weight:normal; " />
+                            <p:chart type="bar" model="#{dashBoard.policeCleanRateBar}" style="width:90%;height: 450px;font-size: 14px;font-family:serif;font-weight:normal; "/> 
+                        </h:panelGrid>
+                        <h:panelGrid width="100%" columns="2" columnClasses="left.right" id="case">
+                            <p:chart type="bar" model="#{dashBoard.crimeTypeBasedBar}" style="width:90%;height: 450px;font-size: 14px;font-family:serif;font-weight:normal; " />
+                            <p:chart type="bar" model="#{dashBoard.policeEmergenceResponseBar}" style="width:90%;height: 450px;font-size: 14px;font-family:serif;font-weight:normal; "/> 
+                        </h:panelGrid>
+                    </h:form>
+                </p:panel>
+            </div>
+        </ui:composition>
+    </h:body>
+
+</html>

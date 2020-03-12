@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Police Job Tittles"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Add New Job Tittle" action="#{jobsBean.resetFields()}" update=":addForm"
+                                         oncomplete="PF('addpnl').show()" icon="fa fa-plus"/>
+                        <p:commandButton value="Refresh" action="#{jobsBean.fetchJobTittles()}" update="table" icon="fa fa-refresh"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:dataTable value="#{jobsBean.jobTittles}" var="si" 
+                                 filteredValue="#{jobsBean.filterdJobTittles}" 
+                                 selection="#{jobsBean.selectedJobTittles}" widgetVar="tablevar"
+                                 id="table" rows="10" 
+                                 paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25,30,50,100,150"
+                                 >
+                        <p:column headerText="JobTitle"  filterBy="#{si.job_tittle}" sortBy="#{si.job_tittle}">
+                            <h:outputText value="#{si.job_tittle}"/>
+                        </p:column>
+                        <p:column headerText="Email Address" filterBy="#{si.job_email}" sortBy="#{si.job_email}">
+                            <h:outputText value="#{si.job_email}"/>
+                        </p:column>
+                        <p:column headerText="Notes" filterBy="#{si.job_notes}" sortBy="#{si.job_notes}">
+                            <h:outputText value="#{si.job_notes}"/>
+                        </p:column>
+                        <p:column headerText="Date Created" filterBy="#{si.dateCreated}" sortBy="#{si.dateCreated}">
+                            <h:outputText value="#{si.dateCreated}"/>
+                        </p:column>
+
+                        <p:column headerText="Action">
+                            <p:commandButton value="Edit" action="#{jobsBean.loadOneJobTittle(si)}" update=":edtForm"
+                                             oncomplete="PF('edtpnl').show()" icon="fa fa-pencil-square"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog widgetVar="addpnl" header="Add Job Tittle" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Job Tittle: " for="job"/>
+                            <p:inputText value="#{jobsBean.job_tittle}"  id="job" required="true" label="Job Tittle" 
+                                         autocomplete="true" title="Enter Job Tittle" placeholder="Job Tittle">
+                                <f:validateLength minimum="4" for="job"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Email Address: " for="email"/>
+                            <p:inputText value="#{jobsBean.job_email}"  id="email" required="true" label="Email Address" 
+                                         autocomplete="true" title="Enter Email Address" placeholder="Email Address">
+                                <f:validateLength minimum="4" for="email"/>
+                            </p:inputText>
+                            <h:outputLabel value="Notes: " for="notes"/>
+                             <p:inputTextarea rows="5" cols="30" autoResize="true"  value="#{jobsBean.job_notes}"  id="notes" required="true" label="Notes" 
+                                        title="Enter Notes" placeholder="Notes">
+                                <f:validateLength minimum="4" for="notes"/>
+                            </p:inputTextarea>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add Job Title"  icon="fa fa-save" action="#{jobsBean.insertJobTittle()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="edtpnl" header="Edit Job Tittle" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="edtForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Job Tittle: " for="job"/>
+                            <p:inputText value="#{jobsBean.job_tittle}"  id="job" required="true" label="Job Tittle" 
+                                         autocomplete="true" title="Enter Job Tittle" placeholder="Job Tittle">
+                                <f:validateLength minimum="4" for="job"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Email Address: " for="email"/>
+                            <p:inputText value="#{jobsBean.job_email}"  id="email" required="true" label="Email Address" 
+                                         autocomplete="true" title="Enter Email Address" placeholder="Email Address">
+                                <f:validateLength minimum="4" for="email"/>
+                            </p:inputText>
+                            <h:outputLabel value="Notes: " for="notes"/>
+                          <p:inputTextarea rows="5" cols="30" autoResize="true"  value="#{jobsBean.job_notes}"  id="notes"  label="Notes:" 
+                                         title="Enter Notes:" placeholder="Notes:">
+                                <f:validateLength minimum="4" for="notes"/>
+                            </p:inputTextarea>
+                            <h:inputHidden value="#{jobsBean.id}"/>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Update Department"  icon="fa fa-save" action="#{jobsBean.updateJobTittle()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

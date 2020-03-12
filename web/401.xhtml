@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Police Portal :: LOGIN</title> 
+        <link href="images/Kenya_Police_Flag.gif" rel="icon" type="image/x-icon" />
+            <link href="images/Kenya_Police_Flag.gif" rel="shortcut icon" type="image/x-icon" />
+
+    </h:head>
+
+    <h:body>
+        <div id="header-container1">
+
+            <div id="header"> 
+                <p:panel style="width:auto;border: none">
+                    <div align="center">
+                        <img src="images/logop.png" alt="Kenya_Police_Flag"  height="80px"  border="0"  style="margin-top:-1.7%"  longdesc="http://www.mspace.co.ke" />
+
+                    </div>  
+                </p:panel>                 
+            </div>  
+
+        </div >
+
+        <div align="center">
+            <p:panel styleClass="customTitleBar" style="width: 80%; height: auto " id="basic" header="Police Portal::Missing login - Error 401">
+                <h:form>
+                    <p:staticMessage severity="info" detail="Missing login, Kindly Login again to proceed." summary="Missing login!!!" />
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="images/ajax-loader.gif" />
+                    </p:dialog>
+                    <p:growl showSummary="true" id="msgs"/>
+                    <div align="center">
+                        <p:messages id="messages" showDetail="true" closable="true">
+                            <p:autoUpdate />
+                        </p:messages>
+                        <h:panelGrid columns="3">
+
+                            <h:outputText  style="font-size: 14px;width: 100%;font-weight:bolder;" value=" Username: " 
+                                           class="fa fa-1x fa-user">
+                            </h:outputText>
+                            <p:inputText  style="color:#0000a0;font-size:14px" value="#{loginBean.uname}" id="name" 
+                                          placeholder="Your Username"
+                                          required="true" label="Username">
+                                <f:validateLength minimum="4" maximum="100"/>
+                            </p:inputText>
+                            <p:message for="name" display="Default"/>
+
+
+                            <h:outputText  style="font-size: 14px;width: 100%;font-weight:bolder;" value=" Password: "  class="fa fa-1x fa-key">
+
+                            </h:outputText>
+                            <p:password style="font-size:14px;color:#0000a0;"   
+                                        value="#{loginBean.passwd}" placeholder="Your Password"
+                                        id="password" required="true" label = "Password">
+                                <f:validateLength minimum="4" maximum="100"/>
+                            </p:password>
+                            <p:message for="password" display="Default"/>
+                            <p:commandButton style="font-size: 14px;font-weight:bolder" action="#{loginBean.checkLoginType()}" value="Login" id="action" icon="fa fa-sign-in"/>
+                        </h:panelGrid> </div>
+
+
+                </h:form>
+
+                <!--    End put content     -->
+            </p:panel>
+        </div>
+        <div style="align-content: center; text-align: center">
+            <br/>
+            @copyright <script>document.write(new Date().getFullYear());</script>  <a href="https://mspace.co.ke" target="_BLANK">MSpace Solutions Limited</a>
+        </div>
+
+    </h:body>
+</html>
+
+

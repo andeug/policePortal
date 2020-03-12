@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.5.0/css/all.css' integrity='sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU' crossorigin='anonymous'/>
+        <link href="https://unpkg.com/ionicons@4.5.5/dist/css/ionicons.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+        <h:outputStylesheet library="css" name="stylesheet.css" > </h:outputStylesheet>
+
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Cleaned Evidence"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form  id="tblform" style="width: 100%"> 
+                    <p:ajaxStatus style="display:block;margin-bottom:2em;height:24px;">
+                    </p:ajaxStatus>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <h:outputText value="#{cleanedEvidenceBean.fetchCleanedEvidence()}" />
+                    <div align="center">
+
+                        Start Date(Date Created):
+                        <p:calendar showButtonPanel="true"  id="sCalendar"
+                                    value="#{cleanedEvidenceBean.sdate}"
+                                    pattern="yyyy-MM-dd" navigator="true"
+                                    style="width:200px;font-size: 14px"
+                                    immediate="true" >
+                        </p:calendar> 
+
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        End Date(Date Created):
+                        <p:calendar showButtonPanel="true"  id="eCalendar"
+                                    value="#{cleanedEvidenceBean.edate}" navigator="true"
+                                    pattern="yyyy-MM-dd"
+                                    style="width:200px;font-size: 14px"
+                                    immediate="true"  >
+                        </p:calendar> 
+                        <br/><br/>
+                        <h:panelGrid columns="4" cellspacing="10" >
+                            <p:commandButton style="font-size: 14px;font-weight:bolder"  
+                                             value="Submit" icon="fa fa-search"
+                                             action="#{cleanedEvidenceBean.fetchCleanedEvidence()}"
+                                             update="ottable,:msgform:msg" />&nbsp; &nbsp;
+                        </h:panelGrid><br/>
+                    </div>
+                    <p/>
+
+                    <p:dataTable value="#{cleanedEvidenceBean.cleanedEvidence}" var="si" id="ottable"  
+                                 rows="10"  filteredValue="#{cleanedEvidenceBean.filteredCleanedEvidence}"
+                                 paginator="true"        widgetVar="ottable1" 
+                                 paginatorPosition="bottom"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,20,35,50,100" 
+                                 emptyMessage="No data Availble!!"
+                                 style="font-size: 14px;margin-bottom:40px"
+                                 >
+                        <f:facet name="header">
+                            <h:commandLink id="pdfxpt" style="float: right">
+                                <p:graphicImage value="./resources/images/pdf1.png" width="22" height="22"/>
+                                <p:dataExporter type="pdf" target="ottable" fileName="#{loginBean.excelExportName}myclissue"/>
+                            </h:commandLink>
+                            <p:tooltip id="toolTip2" for="pdfxpt" value="Export data to PDF" />
+
+
+                            <h:commandLink id="xslxpt" style="float: right">
+                                <p:graphicImage value="./resources/images/MicrosoftExcel.png" width="24" height="24"/>
+                                <p:dataExporter type="xlsxstream" target="ottable" fileName="#{loginBean.excelExportName}myclissue"/>
+                            </h:commandLink>
+                            <p:tooltip id="toolTip1" for="xslxpt" value="Export data to Excel" />
+
+                            <p:commandButton id="toggler" type="button" icon="fa fa-bars" 
+                                             style="float:left;"/>
+                            <p:columnToggler datasource="ottable" trigger="toggler">
+                            </p:columnToggler>
+
+                            <p:tooltip id="Ttptoggler" for="toggler" value="Choose columns to display"/>
+
+                            <p:outputPanel style="width:150px;display: inline" >
+                                <h:outputText value=""/>
+                                <p:inputText autocomplete="true"  id="globalFilter" onkeyup="PF('ottable1').filter()" style="width:150px;font-size:14px;color:#0000a0" placeholder="Enter Search"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column sortBy="#{si.crime_type}" filterBy="#{si.crime_type}" headerText="Crime Type">
+                            <h:outputText style="font-size: 14px;" value="#{si.crime_type}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.suspect_name}" filterBy="#{si.suspect_name}" headerText="Suspect Name">
+                            <h:outputText style="font-size: 14px;" value="#{si.suspect_name}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.suspect_gender}"  headerText="Suspect Gender">
+                            <h:outputText style="font-size: 14px;" value="#{si.suspect_gender}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.crime_name_location}" filterBy="#{si.crime_name_location}" headerText="Crime location">
+                            <h:outputText style="font-size: 14px;" escape="false" value="#{si.crime_name_location}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.crime_description}"   headerText="Crime Description">
+                            <h:outputText style="font-size: 14px;" value="#{si.crime_description}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.dateReceived}"  filterBy="#{si.dateReceived}" headerText="Date Received">
+                            <h:outputText style="font-size: 14px;" value="#{si.dateReceived}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.dateCleaned}"  filterBy="#{si.dateCleaned}" headerText="Date Cleaned">
+                            <h:outputText style="font-size: 14px;" value="#{si.dateCleaned}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.reportedBy}" filterBy="#{si.reportedBy}"  headerText="Reported By">
+                            <h:outputText style="font-size: 14px;" value="#{si.reportedBy}"/>
+                        </p:column>
+                        <p:column sortBy="#{si.cleanedBy}"  filterBy="#{si.cleanedBy}" headerText="Cleaned By">
+                            <h:outputText style="font-size: 14px;" value="#{si.cleanedBy}"/>
+                        </p:column>
+                        <p:column exportable="false" headerText="Action">
+                            <p:commandButton value="Edit"
+                                             oncomplete="PF('viewpnl').show()"
+                                             action="#{cleanedEvidenceBean.loadOneCleanedEvidence(si)}"
+                                             icon="fa fa-pencil-square" update=":viewForm"
+                                             />
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog widgetVar="viewpnl" header="View Evidence" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="viewForm">
+                        <h:panelGrid columns="1">
+                            <h:panelGrid columns="2">
+                                <p:panelGrid columns="2">
+                                    <f:facet name="header">
+                                        <h:outputText value="Crime Details"/>
+                                    </f:facet>
+                                    <h:outputLabel value="Crime Type:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.crime_type}"/>
+                                    <h:outputLabel value="Crime Latitude:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.crime_latitude}"/>
+                                    <h:outputLabel value="Crime Longitude:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.crime_longitude}"/>
+                                    <h:outputLabel value="Crime Location Name:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.crime_name_location}"/>
+                                    <h:outputLabel value="Crime Description:"/>
+                                    <p:inputTextarea rows="5" cols="20" autoResize="true" value="#{cleanedEvidenceBean.crime_description}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2">
+                                    <f:facet name="header">
+                                        <h:outputText value="Suspect Details"/>
+                                    </f:facet>
+                                    <h:outputLabel value="Suspect Name:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.suspect_name}"/>
+                                    <h:outputLabel value="Suspect Gender:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.suspect_gender}"/>
+                                    <h:outputLabel value="Suspect Height"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.suspect_height}"/>
+                                    <h:outputLabel value="Suspect Evidence:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.suspect_evidence}"/>
+                                    <h:outputLabel value="Suspect Description:"/>
+                                    <p:inputTextarea rows="5" cols="20" autoResize="true" value="#{cleanedEvidenceBean.suspect_description}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2">
+                                    <f:facet name="header">
+                                        <h:outputText value="Witness Details"/>
+                                    </f:facet>
+                                    <h:outputLabel value="Reported By:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.reportedBy}"/>
+                                    <h:outputLabel value="Date Reported:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.dateReceived}"/>
+                                </p:panelGrid>
+                                <p:panelGrid columns="2">
+                                    <f:facet name="header">
+                                        <h:outputText value="Police Details"/>
+                                    </f:facet>
+                                    <h:outputLabel value="Cleaned By:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.cleanedBy}"/>
+                                    <h:outputLabel value="Date Cleaned:"/>
+                                    <h:outputText value="#{cleanedEvidenceBean.dateCleaned}"/>
+                                </p:panelGrid>
+                            </h:panelGrid>
+                            <p:textEditor height="200" style="width:600px;"  placeholder="Enter Cleaning Notes"  value="#{cleanedEvidenceBean.notes}"/>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Update Evidence" 
+                                             
+                                             action="#{cleanedEvidenceBean.updateCleanedEvidence()}"
+                                             icon="fa fa-save" update=":tblform:ottable :msgform:msg"
+                                             />
+                        </div>
+
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

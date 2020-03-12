@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: HeatMap Marker"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog><!--ROADMAP-->
+                    <p:gmap id="gmap" center="-1.28333, 36.81667" zoom="13" type="HYBRID" style="width:100%;height:600px"
+                            model="#{hotmapMarker.emptyModel}" onPointClick="handlePointClick(event);" widgetVar="map" />
+
+                    <p:dialog widgetVar="dlg" showEffect="fade">
+                        <h:form prependId="false">
+                            <h:panelGrid columns="2">
+                                <h:outputLabel for="title" value="Title:" />
+                                <p:inputText id="title" value="#{hotmapMarker.title}" />
+
+                                <f:facet name="footer">
+                                    <p:commandButton value="Add" action="#{hotmapMarker.addMarker}" update=":msgform:msg" oncomplete="markerAddComplete()" />
+                                    <p:commandButton value="Cancel" onclick="return cancel()" />
+                                </f:facet>
+                            </h:panelGrid>
+
+                            <h:inputHidden id="lat" value="#{hotmapMarker.lat}" />
+                            <h:inputHidden id="lng" value="#{hotmapMarker.lng}" />
+                        </h:form>
+                    </p:dialog>
+                </h:form>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <f:view contentType="text/html">
+        <h:head>
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+
+            <title>Police Portal</title> 
+            <link href="images/Kenya_Police_Flag.gif" rel="icon" type="image/x-icon" />
+            <link href="images/Kenya_Police_Flag.gif" rel="shortcut icon" type="image/x-icon" />
+            <script src="js/hotmap.js" type="text/javascript"></script>
+            <link href="css/hotmap.css" rel="stylesheet" type="text/css"/>
+            <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
+            <!--  <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA0SZ30ZGDT3a6sUnNDIE75TavyU7Qnv1o&amp;callback=initMap"> </script>-->
+        </h:head>
+
+        <h:body>
+
+            <p:layout fullPage="true">
+
+                <p:layoutUnit position="north" size="110" resizable="true" closable="true" collapsible="true">
+                    <ui:include src="content/header.xhtml"/>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="south" size="50" closable="true" collapsible="true">
+                    <ui:include src="content/footer.xhtml"/>      
+                </p:layoutUnit>
+
+                <p:layoutUnit position="west" size="175" header="Menu" collapsible="true">
+                    <ui:include src="content/sideBar.xhtml"/>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <h:form id="pollForm">
+                        <p:poll interval="3"  listener="#{emergenceBean.fetchOneEmergence()}"/>
+                    </h:form>
+                    <p:dialog   header="Current Emergency"  widgetVar="viewpnlmain" resizable="true" closable="true" minimizable="true"
+                                closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" width="600" maximizable="true">
+                        <h:form id="emergence">
+                            <p:dataTable value="#{emergenceBean.emergencyOneList}" var="em">
+                                <p:column headerText="Emergence" >
+                                    <h:outputText value="#{em.emergency}"/>
+                                </p:column>
+                                <p:column headerText="Latitude" >
+                                    <h:outputText value="#{em.crime_latitude}"/>
+                                </p:column>
+                                <p:column headerText="Longitude" >
+                                    <h:outputText value="#{em.crime_longitude}"/>
+                                </p:column>
+                                <p:column headerText="Location" >
+                                    <h:outputText value="#{em.crime_name_location}"/>
+                                </p:column>
+                                <p:column headerText="Action" >
+                                    <p:commandButton value="Respond" icon="fa fa-send" action="#{emergenceBean.oneEvidence(em)}"
+                                                     update=":viewemrpnlForm"
+                                                     oncomplete="PF('viewemrpnl').show()"/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </p:dialog>
+                    <p:dialog  widgetVar="viewemrpnl" header="Responding Officer" resizable="true" closable="true" minimizable="true"
+                               closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" maximizable="true" >
+                        <h:form id="viewemrpnlForm">
+                            <h:panelGrid columns="2">
+                                <h:outputLabel value="Responding Officer:" for="oif"/>
+                                <p:selectOneMenu  value="#{emergenceBean.responding_officer}" id="oif" required="true" label="Crime Type" filter="true" >
+                                    <f:selectItem itemLabel="Select Officer" itemValue=""/>
+                                    <f:selectItems value="#{policeController.policeOfficers}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                                </p:selectOneMenu> 
+
+                                <h:outputLabel value="Emergence:" for="em"/>
+                                <h:outputText id="em" value="#{emergenceBean.emergency}"/>
+
+
+                            </h:panelGrid>
+                            <div>
+                                <p:commandButton value="Respond" icon="fa fa-send" action="#{emergenceBean.updateEmergence()}" update=":msgform:msg"/>
+                            </div>
+                        </h:form>
+                    </p:dialog>
+                    <h:form id="msgform">
+                        <p:clock/>
+                        <p:growl id="msg" showDetail="true" showSummary="true" >
+                        </p:growl>
+                    </h:form>
+                    <ui:include  src="#{facePainter.mainContent}"/>
+                </p:layoutUnit>
+
+            </p:layout>
+
+        </h:body>
+
+    </f:view>
+</html>
+

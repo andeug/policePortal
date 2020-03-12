@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <script>
+            function showloading() {
+                document.getElementById('progressbar').style.display = 'block';
+                alert("brrrrr");
+            }
+        </script>
+    </h:head>
+
+    <h:body>
+        <ui:composition>         
+            <h:form>
+                <noscript>        <div style=" width: 300px; float: right ;margin-top: 100px">   
+                        <h3 style="color: red;">For full functionality of this page it is necessary to enable JavaScript. Here are the 
+                            <a href="http://www.enable-javascript.com" target="_blank"> 
+                                instructions how to enable JavaScript in your web browser</a></h3>
+                    </div>   </noscript>
+                <div > 
+                    <h:outputLabel value=" Welcome #{sessionScope.fname} #{sessionScope.sname}" class="fa fa-user-o"
+                                   style="font-size: 14px;;text-align: left;color:#0000a0;font-weight: bolder"></h:outputLabel>
+
+                    <center> 
+                        <img src="images/logop.png" alt="Kenya_Police_Flag"  height="100px"  border="0"  style="margin-top:-1.7%"  longdesc="https://www.mspace.co.ke" />
+                        <p:commandButton action="#{loginBean.logOut()}" value="Logout" ajax="false"
+                                         style="float: right;font: 12px georgia; font-weight: bolder;"  icon="fa fa-sign-out"/>
+
+                    </center>
+                </div>
+
+
+            </h:form>
+           
+        </ui:composition>
+
+    </h:body>
+</html>
+

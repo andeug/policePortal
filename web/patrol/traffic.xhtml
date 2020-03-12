@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Traffic"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <h:form id="tblform"  style="width: 100%"> 
+                        <p:gmap center="-1.28333, 36.81667" zoom="15"  type="TERRAIN" model="#{hotmap.simpleModel}" style="width:100%;height:600px" >
+                            <p:ajax event="stateChange" listener="#{hotmap.onStateChange}" update=":msgform:msg" />
+                            <p:ajax event="pointSelect" listener="#{hotmap.onPointSelect}" update=":msgform:msg" />
+                            <p:ajax event="overlaySelect" listener="#{markerSelectionView.onMarkerSelect}" update=":msgform:msg" />
+                        </p:gmap>
+                    </h:form> 
+                </h:form>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

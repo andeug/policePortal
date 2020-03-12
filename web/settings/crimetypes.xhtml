@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal ::Crime Types"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Add New Crime Type" action="#{crimetypeBean.resetFields()}" update=":addForm"
+                                         oncomplete="PF('addpnl').show()" icon="fa fa-plus"/>
+                        <p:commandButton value="Refresh" action="#{crimetypeBean.fetchCrimeTypes()}" update="table" icon="fa fa-refresh"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:dataTable value="#{crimetypeBean.crimeTypes}" var="si" 
+                                 filteredValue="#{crimetypeBean.filterdCrimeTypes}" 
+                                 selection="#{crimetypeBean.selectedCrimeTypes}" widgetVar="tablevar"
+                                 id="table" rows="10" 
+                                 paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25,30,50,100,150"
+                                 >
+                        <p:column headerText="Crime Type"  filterBy="#{si.crime_type}" sortBy="#{si.crime_type}">
+                            <h:outputText value="#{si.crime_type}"/>
+                        </p:column>
+                        <p:column headerText="Crime Category" filterBy="#{si.category}" sortBy="#{si.category}">
+                            <h:outputText value="#{si.category}"/>
+                        </p:column>
+                        <p:column headerText="Crime Notes" filterBy="#{si.notes}" sortBy="#{si.notes}">
+                            <h:outputText value="#{si.notes}"/>
+                        </p:column>
+
+                        <p:column headerText="Action">
+                            <p:commandButton value="Edit" action="#{crimetypeBean.loadOneCrimeType(si)}" update=":edtForm"
+                                             oncomplete="PF('edtpnl').show()" icon="fa fa-pencil-square"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog widgetVar="addpnl" header="Add Crime Type" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Crime Type: " for="crimeType"/>
+                            <p:inputText value="#{crimetypeBean.crime_type}"  id="crimeType" required="true" label="Crime Type" 
+                                         autocomplete="true" title="Enter Crime Type" placeholder="Crime Type">
+                                <f:validateLength minimum="4" for="crimeType"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Category: " for="category"/>
+                            <p:selectOneMenu  value="#{crimetypeBean.crime_category_id}" id="category" required="true" label="Category" filter="true" >
+                                <f:selectItem itemLabel="SelectCrime Category" itemValue=""/>
+                                <f:selectItems value="#{crimeCategoryBean.crimeCategory}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Notes: " for="notes"/>
+                            <p:inputText value="#{crimetypeBean.notes}"  id="notes" required="true" label="Notes" 
+                                         autocomplete="true" title="Enter Notes" placeholder="Notes">
+                                <f:validateLength minimum="4" for="notes"/>
+                            </p:inputText>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add Crime Type"  icon="fa fa-save" action="#{crimetypeBean.insertCrimeType()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="edtpnl" header="Edit Crime Type" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="edtForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Crime Type: " for="crimeType"/>
+                            <p:inputText value="#{crimetypeBean.crime_type}"  id="crimeType" required="true" label="Crime Type" 
+                                         autocomplete="true" title="Enter Crime Type" placeholder="Crime Type">
+                                <f:validateLength minimum="4" for="crimeType"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Category: " for="category"/>
+                            <p:selectOneMenu  value="#{crimetypeBean.crime_category_id}" id="category" required="true" label="Category" filter="true" >
+                                <f:selectItem itemLabel="SelectCrime Category" itemValue=""/>
+                                <f:selectItems value="#{crimeCategoryBean.crimeCategory}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+                            <h:outputLabel value="Notes: " for="notes"/>
+                            <p:inputText value="#{crimetypeBean.notes}"  id="notes"  label="Notes" 
+                                         autocomplete="true" title="Enter Notes" placeholder="Notes">
+                                <f:validateLength minimum="4" for="notes"/>
+                            </p:inputText>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Update Crime Type"  icon="fa fa-save" action="#{crimetypeBean.updateCrimeType()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

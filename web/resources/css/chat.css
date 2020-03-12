@@ -1,0 +1,475 @@
+.mybody {
+    font-family: Arial, Helvetica, sans-serif;
+}
+* {
+    box-sizing: border-box;
+}
+
+/*Desktops*/
+@media (max-width: 1281px) {
+    #body{
+        width: 100%;
+    }
+    #parent{
+        width: 100%;
+    }
+    #myForm{
+        width: 100%;
+    }
+    #chatForm{
+        width: 100%;
+    }
+    #maindiv{
+        width: 100%;
+    }
+    #log{
+        width:100%;
+    }
+    #smsctrl{
+        width: 100%;
+    }
+}
+/*Laptops*/
+@media (min-width: 1025px)and (max-width:1280px) {
+    #body{
+        width: 100%;
+    }
+    #parent{
+        width: 36%;
+    }
+    #myForm{
+        width: 35%;
+    }
+    #chatForm{
+        width: 35%;
+    }
+    #maindiv{
+        width: 35%;
+    }
+    #log{
+        width:35%;
+    }
+    #smsctrl{
+        width: 108%;
+    }
+}
+
+@media (min-width: 1025px)and (max-width:1280px) {
+    #body{
+        width: 100%;
+    }
+    #parent{
+        width: 36%;
+    }
+    #myForm{
+        width: 35%;
+    }
+    #chatForm{
+        width: 35%;
+    }
+    #maindiv{
+        width: 35%;
+    }
+    #log{
+        width:35%;
+    }
+    #smsctrl{
+        width: 108%;
+    }
+}
+/*Tablets and iPad*/
+@media (min-width: 768px) and (max-width: 1024px) {
+    #body{
+        width: 100%;
+    }
+    #parent{
+        width: 50%;
+    }
+    #myForm{
+        width: 48%;
+    }
+    #chatForm{
+        width: 48%;
+    }
+    #maindiv{
+        width: 48%;
+    }
+    #log{
+        width:48%;
+    }
+    #smsctrl{
+        width: 108%;
+    }
+}
+/*Tablets onn Landscape*/
+@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+    #body{
+        width: 100%;
+    }
+    #parent{
+        width: 50%;
+    }
+    #myForm{
+        width: 48%;
+    }
+    #chatForm{
+        width: 48%;
+    }
+    #maindiv{
+        width: 48%;
+    }
+    #log{
+        width:48%;
+    }
+    #smsctrl{
+        width: 108%;
+    }
+}
+/*Bigger Resolution SmartPhones*/
+@media (min-width: 481px) and (max-width: 767px) {
+    #body{
+        width: 100%;
+    }
+    #parent{
+        width: 75%;
+    }
+    #myForm{
+        width: 73%;
+    }
+    #chatForm{
+        width: 73%;
+    }
+    #maindiv{
+        width: 73%;
+    }
+    #log{
+        width:73%;
+    }
+    #smsctrl{
+        width: 93%;
+    }
+}
+/*SmartPhone and Mobile*/
+@media (min-width: 320px) and (max-width: 480px) {
+    #body{
+        width: 100%;
+    }
+    #parent{
+        width: 95%;
+    }
+    #myForm{
+        width: 93%;
+
+    }
+    #chatForm{
+        width: 93%;
+    }
+    #maindiv{
+        width: 93%;
+    }
+    #log{
+        width:93%;
+    }
+    #smsctrl{
+        width: 93%;
+    }
+}
+
+div#log{
+    background-color: #e7f3fd;
+    overflow-y: auto;
+    height: 400px;
+    -webkit-box-flex: 1;
+    padding: 5px;
+}
+div#sendCtrls{
+    width: 235px;
+    margin: 30px auto;
+}
+
+/* Button used to open the chat form - fixed at the bottom of the page */
+.open-button {
+    background-color: #ffffff; 
+    border: #ffffff;
+    cursor: pointer;
+    opacity: 0.8;
+    position: fixed;
+    bottom: 23px;
+    right: 28px;
+    z-index: 9;
+}
+
+.perentStyle {
+    display: none; 
+    height: 540px; 
+    width: 426px;     
+    position: fixed; 
+    right: 15px; 
+    z-index: 9; 
+    bottom: 0px;
+    background-color: #e7f3fd;
+    border:1px solid #4890cc;
+    box-shadow: 5px 5px 18px 5px #bad5ea;
+}
+
+/* The popup chat - hidden by default */
+.chat-popup {
+    position: fixed;
+    bottom: 1px;
+    right: 18px;
+    border: 3px solid #e7f3fd;
+    z-index: 9;
+    height: 510px;
+    width: 410px;
+
+}
+
+/* Add styles to the form container */
+.form-container {
+    width: 410px;
+    background-color: #e7f3fd;
+    overflow-y: auto;
+    height: 510px;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    padding: 10px;
+    position: fixed;
+    right:18px;
+    bottom:1px;
+
+}
+.formTitle{
+    alignment-adjust: middle;
+    font-weight: bold;
+    padding:15px;
+    background-color:#255ba8;
+    color:white;
+    margin: auto 13px;
+    opacity:0.8;
+
+}
+.emlinput{
+    padding:10px;
+    height:100px;
+    width: 150px
+}
+.nameinput{
+    padding:10px;
+    width:150px;
+    height:100px;
+}
+.phoneinput{
+    padding:10px;
+    width:150px;
+    height:100px;
+}
+.inputel{
+    border: 1px solid 	#00008B ; 
+    -webkit-border-radius: 30px; 
+    -moz-border-radius: 30px; 
+    border-radius: 20px; 
+    outline:0; 
+    height:35px; 
+    width: 300px; 
+    padding-left:10px; 
+    padding-right:10px; 
+}
+
+.inputel:invalid {
+    border: 1px solid red;
+}
+
+.inputel:valid {
+    border: 1px solid 	#00008B ;
+}
+
+
+/* Full-width textarea */
+.form-container textarea {
+    width: 100%;
+    padding: 15px;
+    margin: 5px 0 22px 0;
+    border: none;
+    background: #f1f1f1;
+    resize: none;
+    min-height: 200px;
+}
+
+/* When the textarea gets focus, do something */
+.form-container textarea:focus {
+    background-color: #ddd;
+    outline: none;
+
+}
+
+/* Set a style for the submit/send button */
+.form-container .btn {
+    background-color: #255ba8;
+    color: white;
+    padding: 16px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom:10px;
+    opacity: 0.8;
+    border-radius:25px;
+    font-weight:bold;
+}
+
+
+/* Add a red background color to the cancel button */
+
+.mycancel {
+    background-color: #00008B;
+    flex-shrink: 0;
+    color:white;
+    top:0px;
+    opacity: 0.8;
+    border: none;
+    cursor: pointer;
+    right: 0px;
+    position:absolute;
+}
+
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover{
+    opacity: 1;
+}
+
+.chatlogs{
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+    overflow-y: hidden;
+
+}
+
+.chatlogs::-webkit-scrollbar{
+    width: 10px;
+}
+.chatlogs::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background: rgba(0,0,0,.1);
+}
+.chat{
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+.chat .chat-message{
+    width: fit-content;
+    word-wrap:break-word;
+    padding: 10px;
+    margin: 5px 10px 0;
+    color: #f9f5f5;
+    font-size: 14px;
+    max-width:80%;
+
+
+}
+.client .chat-message{
+    background: #00008B;
+    margin-left: auto;
+    right: auto;
+    order:-1;
+    border-radius: 25px 25px 0px;
+    position:relative;
+
+    box-shadow: 0 8px 6px -6px #827f7f;
+
+}
+.admin .chat-message{
+    position:relative;
+    background: #eaeff1;
+    color:black;
+    order: -1;
+    margin-right: 80px;
+    right: 5px;
+    border-radius: 0px 25px 25px;
+    box-shadow: 0 8px 6px -6px #827f7f;
+}
+.time-right {
+    float: right;
+    color: #aaa;
+}
+.time-left {
+    float: left;
+    color: #999;
+}
+.chat .user-image{
+    width: 30px;
+    height: 30px;
+    background: #e0dada;
+    border-radius: 50%;
+}
+.chat-form{
+    margin-top: 20px;
+    display: flex;
+    align-items: flex-start;
+
+}
+.log{
+    width: 424px;     
+    background-color: #e7f3fd;
+    overflow-y: hidden;
+    height: 500px !important;
+    overflow-x:hidden;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    padding: 10px;
+    bottom: 15px;
+    position:fixed;
+    border-radius:5px;
+
+    transition:             height 500ms ease;
+    -moz-transition:    height 500ms ease;
+    -ms-transition:     height 500ms ease;
+    -o-transition:      height 500ms ease;
+    -webkit-transition: height 500ms ease;
+}
+.smsctrl{
+    width: 404px;     
+    padding:10px;
+
+}
+.smsctrl .txt{
+    border-radius: 45px; 
+    height: 50px;
+    width: 78%; 
+    padding:10px;
+    position: absolute;
+    resize: none;
+    bottom: 10px;
+} 
+
+.smsctrl .txt:hover { 
+    border: solid #05367f 1px;   
+} 
+.smsctrl .txt:focus { 
+    outline: 0px;
+} 
+.sendbtn{
+    border-radius: 50%;
+    outline: 0;
+    border: 0;
+    height:40px; 
+    width: 40px;
+    background-color:inherit;
+    color: #05367f;
+    font-weight:900;
+    font-size: 25px;
+    position:absolute;
+    margin :5px;
+    right: 20px;
+    bottom: 10px;
+}
+
+.sendbtn:focus{
+    outline: 0px;
+}
+
+.sendbtn:hover{
+    font-size:30px;
+}
+

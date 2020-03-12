@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <h:form>  <!--AIzaSyA0SZ30ZGDT3a6sUnNDIE75TavyU7Qnv1o   API KEY-->
+                <p:panelMenu style="border: none !important;font-size: 13px; font-weight: bold;" > 
+                    <p:submenu label="Home" icon="fa fa-home" >
+                        <p:menuitem value="DashBoard" action="#{facePainter.dashBoardPage()}" ajax="false" icon="fa fa-dashboard" />
+                        <p:menuitem value="HeatMap" action="#{facePainter.hotmap()}" ajax="false" icon="fa fa-warning" />
+                        <p:menuitem value="HeatMap Marker" action="#{facePainter.hotmapMarker()}" ajax="false" icon="fa fa-edit" />
+                        <p:menuitem value="Emergency" action="#{facePainter.evidence()}" ajax="false" icon="fa fa-bell-o"/>
+                        <p:submenu label="Evidence">
+                            <p:menuitem value="Uploaded Evidence" action="#{facePainter.uploadedEvidence()}"  ajax="false"  icon="fa fa-check-circle"/>
+                            <p:menuitem value="Cleaned Evidence" action="#{facePainter.cleanedEvidence()}" ajax="false" icon="fa fa-check-square"/>
+                        </p:submenu>
+                        <p:menuitem value="Traffic" action="#{facePainter.traffic()}" ajax="false" icon="fa fa-car" />
+                    </p:submenu>
+                    <p:submenu label="Cases" icon="fa fa-cog" >
+                        <p:menuitem value="New Cases"   action="#{facePainter.cases()}" ajax="false" icon="fa fa-plus" />
+                        <p:submenu label="My Cases" >
+                            <p:menuitem value="Open Cases" action="#{facePainter.openCases()}" ajax="false"  icon="fa fa-folder-open"/>
+                            <p:menuitem value="Closed Cases" action="#{facePainter.closedCases()}"  ajax="false" icon="fa fa-folder"/>
+                            <p:menuitem value="Pending Cases" action="#{facePainter.pendingCases()}" ajax="false" icon="fa fa-folder-open-o"/>
+                        </p:submenu>     
+                        <p:submenu label="Assigned Cases" >
+                            <p:menuitem value="Open Cases" action="#{facePainter.openCases()}" ajax="false" icon="fa fa-folder-open"/>
+                            <p:menuitem value="Closed Cases" action="#{facePainter.closedCases()}" ajax="false" icon="fa fa-folder" />
+                        </p:submenu>
+                    </p:submenu>
+                    <p:submenu label="Reports" icon="fa fa-book" >
+                        <p:menuitem value="New Report" action="#{facePainter.newReport()}"  ajax="false"  icon="fa fa-plus"/>
+                        <p:menuitem value="Open Report"  action="#{facePainter.openReport()}" ajax="false" icon="fa fa-folder-open"/>
+                        <p:menuitem value="Assigned Report" action="#{facePainter.closedReport()}"  ajax="false" icon="fa fa-folder"/>
+                    </p:submenu>
+                    <p:submenu label="CI's" icon="fa fa-handshake-o" >
+                        <p:menuitem value="My CI" action="#{facePainter.ci()}" ajax="false"  icon="fa fa-address-book"/>
+                        <p:menuitem value="CI List" action="#{facePainter.ciList()}" ajax="false" icon="fa fa-address-book-o"/>
+                    </p:submenu>
+                    <p:submenu label="Patrol" icon="fa fa-car" >
+                        <p:menuitem value="Patrol" action="#{facePainter.patrol()}"  ajax="false"  icon="fa fa-folder-open"/>
+                        <p:menuitem value="Patron Logs"  action="#{facePainter.patrolLogs()}" ajax="false" icon="fa fa-road"/>
+                        <p:menuitem value="Patron Duty" action="#{facePainter.patrolDuties()}" ajax="false" icon="fa fa-random"/>
+                    </p:submenu>
+                    <p:submenu label="SMS" icon="fa fa-comment">
+
+                        <p:menuitem value="Send SMS " icon="fa fa-send" />
+                    </p:submenu>
+                    <p:submenu label="Email" icon="fa fa-envelope">
+                        <p:menuitem value="Send Email " icon="fa fa-send" />
+                    </p:submenu>                   
+
+                    <p:submenu label="Setting" icon="fa fa-wrench">
+                        <p:submenu label="System Settings" >
+                            <p:menuitem value="Departments"  action="#{facePainter.departments()}" ajax="false" icon="fa fa-building"/>
+                            <p:menuitem value="Crime Category" action="#{facePainter.crimeCategory()}"   ajax="false" icon="fa fa-file-text"/>
+                            <p:menuitem value="Crime Type" action="#{facePainter.crimeTypes()}"   ajax="false" icon="fa fa-file-text"/>
+                            <p:menuitem value="Jobs"  action="#{facePainter.job()}" ajax="false" icon="fa fa-folder"/>
+                            <p:submenu label="System Users" >
+                                <p:menuitem value="Police Users" action="#{facePainter.policeUsers()}" ajax="false" icon="fa fa-users"/>
+                                <p:menuitem value="Mobile Users" action="#{facePainter.mobileUsers()}" ajax="false" icon="fa fa-users"/>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:submenu label="User Settings">
+                            <p:menuitem value="Change Password" action="#{facePainter.changePassword()}"  ajax="false" icon="fa fa-key"/>
+                            <p:menuitem value="Off Manager" action="#{facePainter.offManager()}" ajax="false" icon="fa fa-user-o"/>
+                        </p:submenu>
+                    </p:submenu>
+                </p:panelMenu>
+            </h:form>
+
+        </ui:composition>
+    </h:body>
+</html>

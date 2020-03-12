@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Emergency"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <h:outputText value="#{emergenceBean.fetchEmergence()}"/>
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <p:dataTable value="#{emergenceBean.emergencyList}" var="si" id="ottable"  
+                                 rows="10"  filteredValue="#{emergenceBean.emergencyListFilterd}"
+                                 paginator="true"        widgetVar="ottable1" rowStyleClass="#{si.status eq 1?'gray' : 'black'}"
+                                 paginatorPosition="bottom"  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,20,35,50,100" 
+                                 emptyMessage="No data Availble!!"
+                                 style="font-size: 14px;margin-bottom:40px"
+                                 >
+                        <f:facet name="header">
+                            <h:commandLink id="pdfxpt" style="float: right">
+                                <p:graphicImage value="./resources/images/pdf1.png" width="22" height="22"/>
+                                <p:dataExporter type="pdf" target="ottable" fileName="#{loginBean.excelExportName}myclissue"/>
+                            </h:commandLink>
+                            <p:tooltip id="toolTip2" for="pdfxpt" value="Export data to PDF" />
+
+
+                            <h:commandLink id="xslxpt" style="float: right">
+                                <p:graphicImage value="./resources/images/MicrosoftExcel.png" width="24" height="24"/>
+                                <p:dataExporter type="xlsxstream" target="ottable" fileName="#{loginBean.excelExportName}myclissue"/>
+                            </h:commandLink>
+                            <p:tooltip id="toolTip1" for="xslxpt" value="Export data to Excel" />
+
+                            <p:commandButton id="toggler" type="button" icon="fa fa-bars" 
+                                             style="float:left;"/>
+                            <p:columnToggler datasource="ottable" trigger="toggler">
+                            </p:columnToggler>
+
+                            <p:tooltip id="Ttptoggler" for="toggler" value="Choose columns to display"/>
+
+                            <p:outputPanel style="width:150px;display: inline" >
+                                <h:outputText value=""/>
+                                <p:inputText autocomplete="true"  id="globalFilter" onkeyup="PF('ottable1').filter()" style="width:150px;font-size:14px;color:#0000a0" placeholder="Enter Search"/>
+                            </p:outputPanel>
+                        </f:facet>
+                        <p:column headerText="Emergence" filterBy="#{si.emergency}">
+                            <h:outputText value="#{si.emergency}"/>
+                        </p:column>
+                        <p:column headerText="Latitude" sortBy="#{si.crime_latitude}" >
+                            <h:outputText value="#{si.crime_latitude}" />
+                        </p:column>
+                        <p:column headerText="Longitude" sortBy="#{si.crime_longitude}" >
+                            <h:outputText value="#{si.crime_longitude}"/>
+                        </p:column>
+                        <p:column headerText="Location" sortBy="#{si.crime_name_location}" filterBy="#{si.crime_name_location}">
+                            <h:outputText value="#{si.crime_name_location}"/>
+                        </p:column>
+                        <p:column headerText="Responding Officer" filterBy="#{si.responding_officer_name}">
+                            <h:outputText value="#{si.responding_officer_name}"/>
+                        </p:column>
+                        <p:column headerText="Reporting Officer" filterBy="#{si.response_alert_by}" >
+                            <h:outputText value="#{si.responding_officer_name}"/>
+                        </p:column>
+                        <p:column headerText="Action" >
+                            <p:commandButton value="Respond" icon="fa fa-send"
+                                             action="#{emergenceBean.oneEvidence(si)}"
+                                             update=":viewemrpnlForm1" disabled="#{si.status eq 1?'true' : 'false'}"
+                                             oncomplete="PF('viewemrpnl').show()"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog  widgetVar="viewemrpnl" header="Responding Officer" resizable="true" closable="true" minimizable="true"
+                           closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" maximizable="true" >
+                    <h:form id="viewemrpnlForm1">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Responding Officer:" for="oif"/>
+                            <p:selectOneMenu  value="#{emergenceBean.responding_officer}" id="oif" required="true" label="Crime Type" filter="true" >
+                                <f:selectItem itemLabel="Select Officer" itemValue=""/>
+                                <f:selectItems value="#{policeController.policeOfficers}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu> 
+
+                            <h:outputLabel value="Emergence:" for="em"/>
+                            <h:outputText id="em" value="#{emergenceBean.emergency}"/>
+
+
+                        </h:panelGrid>
+                        <div>
+                            <p:commandButton value="Respond" icon="fa fa-send" action="#{emergenceBean.updateListEmergence()}" update=":msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

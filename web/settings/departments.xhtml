@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Police Departments"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Add New Department" action="#{departmentBean.resetFields()}" update=":addForm"
+                                         oncomplete="PF('addpnl').show()" icon="fa fa-plus"/>
+                        <p:commandButton value="Refresh" action="#{departmentBean.fetchDepartments()}" update="table" icon="fa fa-refresh"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:dataTable value="#{departmentBean.deptList}" var="si" 
+                                 filteredValue="#{departmentBean.filterdDeptList}" 
+                                 selection="#{departmentBean.selectedDeptList}" widgetVar="tablevar"
+                                 id="table" rows="10" 
+                                 paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25,30,50,100,150"
+                                 >
+                        <p:column headerText="Department"  filterBy="#{si.department}" sortBy="#{si.department}">
+                            <h:outputText value="#{si.department}"/>
+                        </p:column>
+                        <p:column headerText="Email Address" filterBy="#{si.department_email}" sortBy="#{si.department_email}">
+                            <h:outputText value="#{si.department_email}"/>
+                        </p:column>
+                        <p:column headerText="Notes" filterBy="#{si.notes}" sortBy="#{si.notes}">
+                            <h:outputText value="#{si.notes}"/>
+                        </p:column>
+                        <p:column headerText="Date Created" filterBy="#{si.dateCreated}" sortBy="#{si.dateCreated}">
+                            <h:outputText value="#{si.dateCreated}"/>
+                        </p:column>
+
+                        <p:column headerText="Action">
+                            <p:commandButton value="Edit" action="#{departmentBean.loadOneDepartment(si)}" update=":edtForm"
+                                             oncomplete="PF('edtpnl').show()" icon="fa fa-pencil-square"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog widgetVar="addpnl" header="Add Department" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Department: " for="dept"/>
+                            <p:inputText value="#{departmentBean.department}"  id="dept" required="true" label="Department" 
+                                         autocomplete="true" title="Enter Department" placeholder="Department">
+                                <f:validateLength minimum="4" for="dept"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Email Address: " for="email"/>
+                            <p:inputText value="#{departmentBean.department_email}"  id="email" required="true" label="Email Address" 
+                                         autocomplete="true" title="Enter Email Address" placeholder="Email Address">
+                                <f:validateLength minimum="4" for="email"/>
+                            </p:inputText>
+                            <h:outputLabel value="Notes: " for="notes"/>
+                           <p:inputTextarea rows="5" cols="30" autoResize="true" value="#{departmentBean.notes}"  id="notes" required="true" label="Notes" 
+                                          title="Enter Notes" placeholder="Notes">
+                                <f:validateLength minimum="4" for="notes"/>
+                            </p:inputTextarea>>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add Department"  
+                                             icon="fa fa-save" action="#{departmentBean.insertDepartment()}"
+                                             update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="edtpnl" header="Edit Department" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="edtForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Department: " for="dept"/>
+                            <p:inputText value="#{departmentBean.department}"  id="dept" required="true" label="Department" 
+                                         autocomplete="true" title="Enter Department" placeholder="Department">
+                                <f:validateLength minimum="4" for="dept"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Email Address: " for="email"/>
+                            <p:inputText value="#{departmentBean.department_email}"  id="email" required="true" label="Email Address" 
+                                         autocomplete="true" title="Enter Email Address" placeholder="Email Address">
+                                <f:validateLength minimum="4" for="email"/>
+                            </p:inputText>
+                            <h:outputLabel value="Notes: " for="notes"/>
+                          <p:inputTextarea rows="5" cols="30" autoResize="true" value="#{departmentBean.notes}"  id="notes"  label="Notes" 
+                                          title="Enter Notes" placeholder="Notes">
+                                <f:validateLength minimum="4" for="notes"/>
+                            </p:inputTextarea>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Update Department" 
+                                             icon="fa fa-save" action="#{departmentBean.updateDept()}" 
+                                             update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

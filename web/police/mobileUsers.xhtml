@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Mobile Users"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Refresh" action="#{mobileUserBean.fetchMobileUsers()}" update="table" icon="fa fa-refresh"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:dataTable value="#{mobileUserBean.mobileUsers}" var="si" 
+                                 filteredValue="#{mobileUserBean.filterdMobileUsers}" 
+                                 selection="#{mobileUserBean.selectedMobileUsers}" widgetVar="tablevar"
+                                 id="table" rows="10" 
+                                 paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25,30,50,100,150"
+                                 >
+                        <p:column headerText="Names"  filterBy="#{si.firstname}" sortBy="#{si.firstname}">
+                            <h:outputText value="#{si.firstname} #{si.middlename} #{si.surname}"/>
+                        </p:column>
+                        <p:column headerText="Email Address" filterBy="#{si.email_address}" sortBy="#{si.email_address}">
+                            <h:outputText value="#{si.email_address}"/>
+                        </p:column>
+                        <p:column headerText="Contact number" filterBy="#{si.contact_number}" sortBy="#{si.contact_number}">
+                            <h:outputText value="#{si.contact_number}"/>
+                        </p:column>
+                        <p:column headerText="ID Number" filterBy="#{si.id_number}" sortBy="#{si.id_number}">
+                            <h:outputText value="#{si.id_number}"/>
+                        </p:column>
+                        <p:column headerText="Passport Number" filterBy="#{si.passport_number}" sortBy="#{si.passport_number}">
+                            <h:outputText value="#{si.passport_number}"/>
+                        </p:column>
+                        <p:column headerText="Action">
+                            <p:commandButton value="View" action="#{mobileUserBean.loadOneMobileUser(si)}" update=":edtForm"
+                                             oncomplete="PF('edtpnl').show()" icon="fa fa-eye"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+
+                <p:dialog widgetVar="edtpnl" header="VIew Officer" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="edtForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="First Name: " for="fname"/>
+                            <h:outputText value="#{mobileUserBean.firstname}"  id="fname"   
+                                          title="User's Firstname" >
+                            </h:outputText>
+
+                            <h:outputLabel value="Surname: " for="sname"/>
+                            <h:outputText value="#{mobileUserBean.surname}"  id="sname"  
+                                          title="User's Surname" >
+                            </h:outputText>
+                            <h:outputLabel value="Middle Name: " for="mname"/>
+                            <h:outputText value="#{mobileUserBean.middlename}"  id="mname"  
+                                          title="User's MiddleName" >
+                            </h:outputText>
+
+                            <h:outputLabel value="Email Address: " for="email"/>
+                            <h:outputText value="#{mobileUserBean.email_address}"  id="email"  
+                                          title="User's Email Address">
+                            </h:outputText>
+
+                            <h:outputLabel value="Contact Number: " for="number"/>
+                            <h:outputText value="#{mobileUserBean.contact_number}"  id="number"   
+                                          title="User's Contact number">
+                            </h:outputText>
+
+                            <h:outputLabel value="Username: " for="uname"/>
+                            <h:outputText value="#{mobileUserBean.username}"  id="uname"  
+                                          title="User's Username" >
+                            </h:outputText>
+
+                            <h:outputLabel value="Password: " for="pswd"/>
+                            <h:outputText value="#{mobileUserBean.password}"  id="pswd"   
+                                        title="User's Password" >
+                            </h:outputText>
+
+
+                            <h:outputLabel value="ID Number: " for="idno"/>
+                            <h:outputText value="#{mobileUserBean.id_number}"  id="idno"  
+                                          title="User's ID Number" >
+                            </h:outputText>
+
+                            <h:outputLabel value="Passport Number: " for="passno"/>
+                            <h:outputText value="#{mobileUserBean.passport_number}"  id="passno"  
+                                          title="User's Passport Number">
+                            </h:outputText>
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

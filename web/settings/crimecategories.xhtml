@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal ::Crime Categorys"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Add New Crime Category" action="#{crimeCategoryBean.resetFields()}" update=":addForm"
+                                         oncomplete="PF('addpnl').show()" icon="fa fa-plus"/>
+                        <p:commandButton value="Refresh" action="#{crimeCategoryBean.fetchCrimeCategory()}" update="table" icon="fa fa-refresh"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:dataTable value="#{crimeCategoryBean.crimeCategories}" var="si" 
+                                 filteredValue="#{crimeCategoryBean.filterdcrimeCategories}" 
+                                 selection="#{crimeCategoryBean.selectedcrimeCategories}" widgetVar="tablevar"
+                                 id="table" rows="10" 
+                                 paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25,30,50,100,150"
+                                 >
+                        <p:column headerText="Crime Category"  filterBy="#{si.crime_category}" sortBy="#{si.crime_category}">
+                            <h:outputText value="#{si.crime_category}"/>
+                        </p:column>
+                        <p:column headerText="Crime Notes" filterBy="#{si.crime_notes}" sortBy="#{si.crime_notes}">
+                            <h:outputText value="#{si.crime_notes}"/>
+                        </p:column>
+                        <p:column headerText="Crime Color" filterBy="#{si.crime_color}" sortBy="#{si.crime_color}">
+                            <h:outputText value="Color" style="font-size: 14px;color:#{si.crime_color};font-weight: bolder;"/>
+                        </p:column>
+
+                        <p:column headerText="Action">
+                            <p:commandButton value="Edit" action="#{crimeCategoryBean.loadOneCrimeCategory(si)}" update=":edtForm"
+                                             oncomplete="PF('edtpnl').show()" icon="fa fa-pencil-square"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog widgetVar="addpnl" header="Add Crime Category" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Crime Category: " for="crime_category"/>
+                            <p:inputText value="#{crimeCategoryBean.crime_category}"  id="crime_category" required="true" label="Crime Category" 
+                                         autocomplete="true" title="Enter crime_category" placeholder="crime_category">
+                                <f:validateLength minimum="4" for="crime_category"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Crime Notes: " for="crime_notes"/>
+                            <p:inputTextarea rows="5" cols="30" autoResize="true" value="#{crimeCategoryBean.crime_notes}"  id="crime_notes" required="true" label="Notes" 
+                                             title="Enter Notes" placeholder="Notes">
+                                <f:validateLength minimum="4" for="crime_notes"/>
+                            </p:inputTextarea>
+                            <h:outputLabel value="Crime Color: " for="color"/>
+                            <p:colorPicker value="#{crimeCategoryBean.crime_color}"  id="color" required="true" mode="inline">
+                            </p:colorPicker>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add Crime Category"  icon="fa fa-save" action="#{crimeCategoryBean.insertCategory()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="edtpnl" header="Edit Crime Category" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="edtForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="Crime Category: " for="crimeCategory"/>
+                            <p:inputText value="#{crimeCategoryBean.crime_category}"  id="crimeCategory" required="true" label="Crime Category" 
+                                         autocomplete="true" title="Enter Crime Category" placeholder="Crime Category">
+                                <f:validateLength minimum="4" for="crimeCategory"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Crime Notes: " for="notes"/>
+                            <p:inputTextarea rows="5" cols="30" autoResize="true" value="#{crimeCategoryBean.crime_notes}"  id="notes"  label="notes" 
+                                             title="Enter notes" placeholder="notes">
+                                <f:validateLength minimum="4" for="notes"/>
+                            </p:inputTextarea>
+                            <h:outputLabel value="Crime Color: " for="color"/>
+                            <p:colorPicker value="#{crimeCategoryBean.crime_color}"  id="color"  mode="inline">
+                            </p:colorPicker>
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Update Crime Category"  icon="fa fa-save" action="#{crimeCategoryBean.updateCrimeCategory()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,363 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Cases"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+
+                <p:panelGrid layout="grid" columns="1" style="border:none">
+                    <f:facet name="header">
+                        <h:outputText value="New Case Details"/>
+                    </f:facet>
+
+                    <p:accordionPanel id="mainTab">
+                        <p:tab title="Create New Case">
+                            <h:form id="mainformcase" style="width: 100%">
+                                <br/><br/>
+                                <h:panelGrid columns="4">
+                                    <h:outputLabel value="Crime Type:" for="crie"/>
+                                    <p:selectOneMenu  value="#{newCase.crime_type_id}" id="crie" required="true" label="Crime Type" filter="true" >
+                                        <f:selectItem itemLabel="Select Crime Type" itemValue=""/>
+                                        <f:selectItems value="#{crimeController.crimes}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                                    </p:selectOneMenu>
+                                    <h:outputLabel value="Assign to Officer:" for="oif"/>
+                                    <p:selectOneMenu  value="#{newCase.assignedOfficer_id}" id="oif" required="true" label="Crime Type" filter="true" >
+                                        <f:selectItem itemLabel="Select Officer" itemValue=""/>
+                                        <f:selectItems value="#{policeController.policeOfficers}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                                    </p:selectOneMenu>
+
+                                </h:panelGrid>
+                                <h:panelGrid columns="3">
+                                    <p:commandButton value="Create victim Details" action="#{newCase.resetFields()}" oncomplete="PF('vicpnl').show()" icon="fa fa-plus"/>
+                                    <p:commandButton value="Create Witness Details" action="#{newCase.resetFields()}" oncomplete="PF('witpnl').show()" icon="fa fa-plus"/>
+                                    <p:commandButton value="Create Suspect Details" action="#{newCase.resetFields()}" oncomplete="PF('suspnl').show()"  icon="fa fa-plus"/>
+                                </h:panelGrid>
+                                <h:panelGrid columns="2">
+                                    <h:outputLabel for="std" value="Recording officer Statement"/>
+                                    <p:textEditor height="200" value="#{newCase.officer_statement}" required="true"/>
+
+                                </h:panelGrid>
+                                <p:commandButton value="Create Case" icon="fa fa-save"/>
+                                <br/><br/>
+                                <p:separator/>
+
+                            </h:form>
+                        </p:tab>
+                        <p:tab  title="Victim Details">
+                            <h:form id="vicform"  style="width: 100%"> 
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                                <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <p:graphicImage value="./images/ajax-loader.gif" />
+                                </p:dialog>
+                                <p:panelGrid layout="grid" columns="1" style="border:none">
+                                    <p:dataTable id="table"  var="si">
+                                        <p:column headerText="Name">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Id number">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Passport Number">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Victim's Statement">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Tel no.">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Email Address">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Home location">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Address ">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Name">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Tel no">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Id no">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Action">
+                                            <p:commandButton value="Edit" icon="fa fa-pencil-square"/> 
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Suspect Details">
+                            <h:form id="susform"  style="width: 100%"> 
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                                <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <p:graphicImage value="./images/ajax-loader.gif" />
+                                </p:dialog>
+                                <p:panelGrid layout="grid" columns="1">
+                                    <p:dataTable id="table"  var="si">
+                                        <p:column headerText="Name">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Id number">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Passport Number">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Suspect's Statement">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Tel no.">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Email Address">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Home location">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Address ">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Name">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Tel no">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Id no">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Action">
+                                            <p:commandButton value="Edit" icon="fa fa-pencil-square"/> 
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Recording Officer Statement">
+                            <h:form id="officerform"  style="width: 100%"> 
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                                <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <p:graphicImage value="./images/ajax-loader.gif" />
+                                </p:dialog>
+                                <p:panelGrid layout="grid" columns="1">
+                                    <p:dataTable id="table"  var="si">
+                                        <p:column headerText="Officers's Statement">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Action">
+                                            <p:commandButton value="Edit" icon="fa fa-pencil-square"/> 
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab>
+                        <p:tab title="Witness Details">
+                            <h:form id="witform"  style="width: 100%"> 
+                                <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                                <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                                    <p:graphicImage value="./images/ajax-loader.gif" />
+                                </p:dialog>
+                                <p:panelGrid layout="grid" columns="1">
+                                    <p:dataTable id="table"  var="si">
+                                        <p:column headerText="Name">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Id number">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Passport Number">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Witness's Statement">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Tel no.">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Email Address">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Home location">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Address ">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Name">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Tel no">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Next of Kin Id no">
+                                            <h:outputText value=""/>  
+                                        </p:column>
+                                        <p:column headerText="Action">
+                                            <p:commandButton value="Edit" icon="fa fa-pencil-square"/> 
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panelGrid>
+                            </h:form>
+                        </p:tab></p:accordionPanel>
+                </p:panelGrid>
+                <p:dialog widgetVar="witpnl" header="Add Witness" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addwitForm">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Name"/>
+                            <p:inputText value="#{newCase.user_name}" />  
+
+                            <h:outputLabel value="Id number"/>
+                            <p:inputText value="#{newCase.user_id_no}" /> 
+
+                            <h:outputLabel value="Passport Number"/>
+                            <p:inputText value="#{newCase.user_passport_no}" />  
+
+                            <h:outputLabel value="Witness's Statement"/>
+                            <p:inputText value="#{newCase.user_statement}" />  
+
+                            <h:outputLabel value="Tel no."/>
+                            <p:inputText value="#{newCase.user_telno}" />  
+
+                            <h:outputLabel value="Email Address"/>
+                            <p:inputText value="#{newCase.user_emailAddress}" />  
+
+                            <h:outputLabel value="Home location"/>
+                            <p:inputText value="#{newCase.user_home}" />  
+
+                            <h:outputLabel value="Address "/>
+                            <p:inputText value="#{newCase.user_address}" />  
+
+                            <h:outputLabel value="Next of Kin Name"/>
+                            <p:inputText value="#{newCase.user_nextKin_name}" />  
+
+                            <h:outputLabel value="Next of Kin Tel no"/>
+                            <p:inputText value="#{newCase.user_nextKin_telno}" />  
+
+                            <h:outputLabel value="Next of Kin Id no"/>
+                            <p:inputText value="#{newCase.user_nextKin_idno}" />  
+
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add Witness"  update=":msgform:msg :mainTab:witform:table"
+                                             oncomplete="PF('witpnl').show()"
+                                             icon="fa fa-save"/> 
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="suspnl" header="Add Suspect" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addsusForm">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Name"/>
+                            <p:inputText value="#{newCase.user_name}" />  
+
+                            <h:outputLabel value="Id number"/>
+                            <p:inputText value="#{newCase.user_id_no}" /> 
+
+                            <h:outputLabel value="Passport Number"/>
+                            <p:inputText value="#{newCase.user_passport_no}" />  
+
+                            <h:outputLabel value="Witness's Statement"/>
+                            <p:inputText value="#{newCase.user_statement}" />  
+
+                            <h:outputLabel value="Tel no."/>
+                            <p:inputText value="#{newCase.user_telno}" />  
+
+                            <h:outputLabel value="Email Address"/>
+                            <p:inputText value="#{newCase.user_emailAddress}" />  
+
+                            <h:outputLabel value="Home location"/>
+                            <p:inputText value="#{newCase.user_home}" />  
+
+                            <h:outputLabel value="Address "/>
+                            <p:inputText value="#{newCase.user_address}" />  
+
+                            <h:outputLabel value="Next of Kin Name"/>
+                            <p:inputText value="#{newCase.user_nextKin_name}" />  
+
+                            <h:outputLabel value="Next of Kin Tel no"/>
+                            <p:inputText value="#{newCase.user_nextKin_telno}" />  
+
+                            <h:outputLabel value="Next of Kin Id no"/>
+                            <p:inputText value="#{newCase.user_nextKin_idno}" />  
+
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add Suspect"  update=":msgform:msg :mainTab:susform:table"
+                                             oncomplete="PF('suspnl').show()"
+                                             icon="fa fa-save"/> 
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="vicpnl" header="Add Victim" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addvicForm">
+                        <h:panelGrid columns="2">
+                            <h:outputLabel value="Name"/>
+                            <p:inputText value="#{newCase.user_name}" />  
+
+                            <h:outputLabel value="Id number"/>
+                            <p:inputText value="#{newCase.user_id_no}" /> 
+
+                            <h:outputLabel value="Passport Number"/>
+                            <p:inputText value="#{newCase.user_passport_no}" />  
+
+                            <h:outputLabel value="Witness's Statement"/>
+                            <p:inputText value="#{newCase.user_statement}" />  
+
+                            <h:outputLabel value="Tel no."/>
+                            <p:inputText value="#{newCase.user_telno}" />  
+
+                            <h:outputLabel value="Email Address"/>
+                            <p:inputText value="#{newCase.user_emailAddress}" />  
+
+                            <h:outputLabel value="Home location"/>
+                            <p:inputText value="#{newCase.user_home}" />  
+
+                            <h:outputLabel value="Address "/>
+                            <p:inputText value="#{newCase.user_address}" />  
+
+                            <h:outputLabel value="Next of Kin Name"/>
+                            <p:inputText value="#{newCase.user_nextKin_name}" />  
+
+                            <h:outputLabel value="Next of Kin Tel no"/>
+                            <p:inputText value="#{newCase.user_nextKin_telno}" />  
+
+                            <h:outputLabel value="Next of Kin Id no"/>
+                            <p:inputText value="#{newCase.user_nextKin_idno}" />  
+
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add Victim"  update=":msgform:msg :mainTab:vicform:table"
+                                             oncomplete="PF('suspnl').show()"
+                                             icon="fa fa-save"/> 
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,265 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+
+    <h:body>
+        <ui:composition>
+            <div align="center">
+                <h:form>
+                    <div align="center">
+                        <h:outputLabel style="font-size: 14px;width: 100%;font-weight:bolder;" value="Police Portal :: Police Users"  />
+                        <br/><br/>
+                    </div>  
+                </h:form>
+                <h:form id="tblform"  style="width: 100%"> 
+                    <p:ajaxStatus onstart="PF('statusDialog').show()" oncomplete="PF('statusDialog').hide()" />
+                    <p:dialog widgetVar="statusDialog"  draggable="false" closable="false" resizable="false" showHeader="false">
+                        <p:graphicImage value="./images/ajax-loader.gif" />
+                    </p:dialog>
+                    <h:panelGrid columns="2">
+                        <p:commandButton value="Add New Officer" action="#{policeUserBean.resetFields()}" update=":addForm"
+                                         oncomplete="PF('addpnl').show()" icon="fa fa-plus"/>
+                        <p:commandButton value="Refresh" action="#{policeUserBean.fetchPoliceUsers()}" update="table" icon="fa fa-refresh"/>
+                    </h:panelGrid>
+                    <br/>
+                    <p:dataTable value="#{policeUserBean.policeUsers}" var="si" 
+                                 filteredValue="#{policeUserBean.filterdPoliceUsers}" 
+                                 selection="#{policeUserBean.selectedPoliceUsers}" widgetVar="tablevar"
+                                 id="table" rows="10" 
+                                 paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20,25,30,50,100,150"
+                                 >
+                        <p:column headerText="Names"  filterBy="#{si.firstname}" sortBy="#{si.firstname}">
+                            <h:outputText value="#{si.firstname} #{si.middlename} #{si.surname}"/>
+                        </p:column>
+                        <p:column headerText="Email Address" filterBy="#{si.email_address}" sortBy="#{si.email_address}">
+                            <h:outputText value="#{si.email_address}"/>
+                        </p:column>
+                        <p:column headerText="Contact number" filterBy="#{si.contact_number}" sortBy="#{si.contact_number}">
+                            <h:outputText value="#{si.contact_number}"/>
+                        </p:column>
+                        <p:column headerText="Police Code" filterBy="#{si.policeCode}" sortBy="#{si.policeCode}">
+                            <h:outputText value="#{si.policeCode}"/>
+                        </p:column>
+                        <p:column headerText="Department" filterBy="#{si.dept_no}" sortBy="#{si.dept_no}">
+                            <h:outputText value="#{si.dept_no}"/>
+                        </p:column>
+                        <p:column headerText="Job Tittle" filterBy="#{si.job_no}" sortBy="#{si.job_no}">
+                            <h:outputText value="#{si.job_no}"/>
+                        </p:column>
+                        <p:column headerText="Reports To" filterBy="#{si.reports_to}" sortBy="#{si.reports_to}">
+                            <h:outputText value="#{si.reports_to}"/>
+                        </p:column>
+                        <p:column headerText="Task Admin" filterBy="#{si.taskAdmin}" sortBy="#{si.taskAdmin}">
+                            <h:outputText value="#{si.taskAdmin}"/>
+                        </p:column>
+                        <p:column headerText="Action">
+                            <p:commandButton value="Edit" action="#{policeUserBean.loadOnePoliceUser(si)}" update=":edtForm"
+                                             oncomplete="PF('edtpnl').show()" icon="fa fa-pencil-square"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+                <p:dialog widgetVar="addpnl" header="Add Officer" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="addForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="First Name: " for="fname"/>
+                            <p:inputText value="#{policeUserBean.firstname}"  id="fname" required="true" label="First Name" 
+                                         autocomplete="true" title="Enter Firstname" placeholder="First Name">
+                                <f:validateLength minimum="4" for="fname"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Surname: " for="sname"/>
+                            <p:inputText value="#{policeUserBean.surname}"  id="sname" required="true" label="Surname" 
+                                         autocomplete="true" title="Enter Surname" placeholder="Surname">
+                                <f:validateLength minimum="4" for="sname"/>
+                            </p:inputText>
+                            <h:outputLabel value="Middle Name: " for="mname"/>
+                            <p:inputText value="#{policeUserBean.middlename}"  id="mname" required="true" label="Middle Name" 
+                                         autocomplete="true" title="Enter MiddleName" placeholder="Middle Name">
+                                <f:validateLength minimum="4" for="fname"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Email Address: " for="email"/>
+                            <p:inputText value="#{policeUserBean.email_address}"  id="email" required="true" label="Email Addres" 
+                                         autocomplete="true" title="Enter Email Address" placeholder="example@example.com">
+                                <f:validateLength minimum="4" for="email"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Contact Number: " for="number"/>
+                            <p:inputText value="#{policeUserBean.contact_number}"  id="number" required="true" label="Contact Nubmer" 
+                                         autocomplete="true" title="Enter Contact number" placeholder="2547*********">
+                                <f:validateLength minimum="4" for="number"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Username: " for="uname"/>
+                            <p:inputText value="#{policeUserBean.username}"  id="uname" required="true" label="User Name" 
+                                         autocomplete="true" title="Enter Username" placeholder="Username">
+                                <f:validateLength minimum="4" for="uname"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Password: " for="pswd"/>
+                            <p:password value="#{policeUserBean.password}"  id="pswd" required="true" label="Password" 
+                                        title="Enter Password" placeholder="Password">
+                                <f:validateLength minimum="4" for="pswd"/>
+                            </p:password>
+
+                            <h:outputLabel value="Confirm Password: "  for="pswd2"/>
+                            <p:password value="#{policeUserBean.password}" match="pswd" id="pswd1" required="true" label="Confrim Password" 
+                                        autocomplete="true" title="Enter Password Cofirmation" >
+                                <f:validateLength minimum="4" for="pswd1"/>
+                            </p:password>
+
+                            <h:outputLabel value="ID Number: " for="idno"/>
+                            <p:inputText value="#{policeUserBean.id_number}"  id="idno" required="true" label="ID Number" 
+                                         autocomplete="true" title="Enter ID Number" placeholder="*********">
+                                <f:validateLength minimum="4" for="idno"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Passport Number: " for="passno"/>
+                            <p:inputText value="#{policeUserBean.passport_number}"  id="passno" required="true" label="Passport Number" 
+                                         autocomplete="true" title="Enter Passport Number" placeholder="Passport Numbber">
+                                <f:validateLength minimum="4" for="passno"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Police Code: " for="pcode"/>
+                            <p:inputText value="#{policeUserBean.policeCode}"  id="pcode" required="true" label="Police Code" 
+                                         autocomplete="true" title="Enter Police Code" placeholder="Police Code">
+                                <f:validateLength minimum="4" for="pcode"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Department: " for="dept"/>
+                            <p:selectOneMenu  value="#{policeUserBean.dept_no}" id="dept" required="true" label="Department" filter="true" >
+                                <f:selectItem itemLabel="Select Department" itemValue=""/>
+                                <f:selectItems value="#{departmentBean.depts}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="Job Tittle: " for="job"/>
+                            <p:selectOneMenu  value="#{policeUserBean.job_no}" id="job" required="true" label="Job tittle" filter="true" >
+                                <f:selectItem itemLabel="Select Job Tittle" itemValue=""/>
+                                <f:selectItems value="#{jobsBean.jobs}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="Reports To: " for="rpt"/>
+                            <p:selectOneMenu  value="#{policeUserBean.reports_to}" id="rpt" required="true" label="Officer" filter="true" >
+                                <f:selectItem itemLabel="Select Officer" itemValue=""/>
+                                <f:selectItems value="#{policeUserBean.staffs}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:outputLabel value="Task Admin: " for="tadmin"/>
+                            <p:selectOneMenu  value="#{policeUserBean.taskAdmin}" id="tadmin" required="true" label="Task Admin" filter="true" >
+                                <f:selectItem itemLabel="Select Admin Value" itemValue=""/>
+                                <f:selectItems value="#{policeUserBean.adminValue}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Add User"  icon="fa fa-save" action="#{policeUserBean.insertUser()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+                <p:dialog widgetVar="edtpnl" header="Edit Officer" resizable="true" minimizable="true" maximizable="true"
+                          closeOnEscape="true" showEffect="explode" hideEffect="explode" draggable="true" 
+                          responsive="true" closable="true"> 
+                    <h:form id="edtForm">
+                        <h:panelGrid columns="4">
+
+                            <h:outputLabel value="First Name: " for="fname"/>
+                            <p:inputText value="#{policeUserBean.firstname}"  id="fname" required="true" label="First Name" 
+                                         autocomplete="true" title="Enter Firstname" placeholder="First Name">
+                                <f:validateLength minimum="4" for="fname"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Surname: " for="sname"/>
+                            <p:inputText value="#{policeUserBean.surname}"  id="sname" required="true" label="Surname" 
+                                         autocomplete="true" title="Enter Surname" placeholder="Surname">
+                                <f:validateLength minimum="4" for="sname"/>
+                            </p:inputText>
+                            <h:outputLabel value="Middle Name: " for="mname"/>
+                            <p:inputText value="#{policeUserBean.middlename}"  id="mname" required="true" label="Middle Name" 
+                                         autocomplete="true" title="Enter MiddleName" placeholder="Middle Name">
+                                <f:validateLength minimum="4" for="fname"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Email Address: " for="email"/>
+                            <p:inputText value="#{policeUserBean.email_address}"  id="email" required="true" label="Email Addres" 
+                                         autocomplete="true" title="Enter Email Address" placeholder="example@example.com">
+                                <f:validateLength minimum="4" for="email"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Contact Number: " for="number"/>
+                            <p:inputText value="#{policeUserBean.contact_number}"  id="number" required="true" label="Contact Nubmer" 
+                                         autocomplete="true" title="Enter Contact number" placeholder="2547*********">
+                                <f:validateLength minimum="4" for="number"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Username: " for="uname"/>
+                            <p:inputText value="#{policeUserBean.username}"  id="uname" required="true" label="User Name" 
+                                         autocomplete="true" title="Enter Username" placeholder="Username">
+                                <f:validateLength minimum="4" for="uname"/>
+                            </p:inputText>
+
+
+                            <h:outputLabel value="ID Number: " for="idno"/>
+                            <p:inputText value="#{policeUserBean.id_number}"  id="idno" required="true" label="ID Number" 
+                                         autocomplete="true" title="Enter ID Number" placeholder="*********">
+                                <f:validateLength minimum="4" for="idno"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Passport Number: " for="passno"/>
+                            <p:inputText value="#{policeUserBean.passport_number}"  id="passno"  label="Passport Number" 
+                                         autocomplete="true" title="Enter Passport Number" placeholder="Passport Numbber">
+                                <f:validateLength minimum="4" for="passno"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Police Code: " for="pcode"/>
+                            <p:inputText value="#{policeUserBean.policeCode}"  id="pcode" required="true" label="Police Code" 
+                                         autocomplete="true" title="Enter Police Code" placeholder="Police Code">
+                                <f:validateLength minimum="4" for="pcode"/>
+                            </p:inputText>
+
+                            <h:outputLabel value="Department: " for="dept"/>
+                            <p:selectOneMenu  value="#{policeUserBean.dept_no_id}" id="dept" required="true" label="Department" filter="true" >
+                                <f:selectItem itemLabel="Select Department" itemValue=""/>
+                                <f:selectItems value="#{departmentBean.depts}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="Job Tittle: " for="job"/>
+                            <p:selectOneMenu  value="#{policeUserBean.job_no_id}" id="job" required="true" label="Job tittle" filter="true" >
+                                <f:selectItem itemLabel="Select Job Tittle" itemValue=""/>
+                                <f:selectItems value="#{jobsBean.jobs}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+                            <h:outputLabel value="Reports To: " for="rpt"/>
+                            <p:selectOneMenu  value="#{policeUserBean.reports_to_id}" id="rpt" required="true" label="Officer" filter="true" >
+                                <f:selectItem itemLabel="Select Officer" itemValue=""/>
+                                <f:selectItems value="#{policeUserBean.staffs}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:outputLabel value="Task Admin: " for="tadmin"/>
+                            <p:selectOneMenu  value="#{policeUserBean.taskAdmin}" id="tadmin" required="true" label="Task Admin" filter="true" >
+                                <f:selectItem itemLabel="Select Admin Value" itemValue=""/>
+                                <f:selectItems value="#{policeUserBean.adminValue}" var="si" itemLabel="#{si.label}" itemValue="#{si.value}"/>
+                            </p:selectOneMenu>
+
+                        </h:panelGrid>
+                        <div align="center">
+                            <p:commandButton value="Update User"  icon="fa fa-save" action="#{policeUserBean.updateUser()}" update=":tblform:table :msgform:msg"/>
+                        </div>
+                    </h:form>
+                </p:dialog>
+            </div>
+        </ui:composition>
+    </h:body>
+</html>
